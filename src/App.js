@@ -1,24 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import Axios from 'axios'
+import { useState, useEffect } from 'react'
+import SwapiRouter from './swapiRouter'
 
 function App() {
+  const [data, setData] = useState([])
+  const [category, setCategory] = useState('planets')
+  const [loading, setLoading] = useState(true)
+
+  const categories = ['films', 'people', 'planets', 'species', 'starships', 'vehicles']
+
+  const fetchData = async () => {
+    try {
+      await Axios
+        .get(`https://swapi.dev/api/${category}/`)
+        .then(response => {
+          setData(response.data.results)
+          setLoading(false)
+        })
+    }
+
+    catch (error) { console.log(error.message) }
+
+  }
+
+  useEffect(() =>
+    fetchData()
+    , [category])
+
+  console.log(data)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    < div className="App" >
+      <SwapiRouter
+        categories={categories} setCategory={setCategory} data={data} loading={loading} />
+    </div >
   );
 }
 
