@@ -7,19 +7,20 @@ const Category = ({ data, cat }) => {
     const getUrl = (url) => {
         url = url.split('/')
         url = url[5]
-
+        console.log(typeof url)
         return url
     }
 
     console.log(data)
 
-    console.log(getUrl(data[0].url))
+
     console.log("useParams " + id)
+    console.log(typeof id)
 
 
     return (
         <>
-            {data && data.filter(e => id ? parseInt(id, 10) === getUrl(e.url) : e)
+            {data && data.filter(e => id ? id === getUrl(e.url) : e)
                 .map((e, i) => {
                     return !id ?
                         (<div>
